@@ -1,4 +1,4 @@
-import * as Http from '../http';
+import Http from '../http';
 import Immutable from "immutable";
 import DeLorean from 'delorean.js';
 

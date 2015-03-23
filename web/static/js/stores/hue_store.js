@@ -1,6 +1,6 @@
 import Immutable from "immutable";
 import DeLorean from 'delorean.js';
-import * as Http from '../http';
+import Http from '../http';
 
 let Store = DeLorean.Flux.createStore({ 
   data: { lights: {}, chan: null },

@@ -1,31 +1,38 @@
 import JQuery from "jquery";
 
-export function get(url, done, fail, anonymous = false){
-  JQuery.ajax({
-      url: url,
-      type: 'get',
-      headers: setHeaders(anonymous),
-      dataType: 'json'
-  }).done(done).fail(fail);
-}
+let Http = {
+  setHeaders: function(anonymous = true){
+    let headers = {}
 
-export function post(url, data, done, fail, anonymous = false){
-  JQuery.ajax({
-      url: url,
-      type: 'post',
-      data: data,
-      headers: setHeaders(anonymous),
-      dataType: 'json'
-  }).done(done).fail(fail);
-}
+    if(!anonymous){
+      let token = window.App.Dispatcher.getStore("auth").data.token;
+      headers['Authorization'] = `Bearer ${token}`
+    }
 
-function setHeaders(anonymous = true){
-  let headers = {}
+    return headers;    
+  },
 
-  if(!anonymous){
-    let token = window.App.Dispatcher.getStore("auth").data.token;
-    headers['Authorization'] = `Bearer ${token}`
+  get: function(url, done, fail, anonymous = false){
+    JQuery.ajax({
+        url: url,
+        type: 'get',
+        headers: this.setHeaders(anonymous),
+        dataType: 'json'
+    }).done(done).fail(fail);
+  },
+
+  post: function(url, data, done, fail, anonymous = false){
+    JQuery.ajax({
+        url: url,
+        type: 'post',
+        data: data,
+        headers: this.setHeaders(anonymous),
+        dataType: 'json'
+    }).done(done).fail(fail);
   }
-
-  return headers;
 }
+
+export default Http;
+
+
+
