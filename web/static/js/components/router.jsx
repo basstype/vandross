@@ -1,10 +1,10 @@
 import React from "react"
-import Router from "react-router"
+import { default as ReactRouter }from "react-router"
 
-var Route = Router.Route;
-var DefaultRoute = Router.DefaultRoute;
-var Link = Router.Link;
-var RouteHandler = Router.RouteHandler;
+var Route = ReactRouter.Route;
+var DefaultRoute = ReactRouter.DefaultRoute;
+var Link = ReactRouter.Link;
+var RouteHandler = ReactRouter.RouteHandler;
 
 import Layout from "./layout"
 import Dashboard from "./dashboard"
@@ -19,8 +19,12 @@ var routes = (
   </Route>
 );
 
-export default function startRouter(){
-  Router.run(routes, function (Handler) {
-    React.render(<Handler/>, document.getElementById("view"));
-  }); 
-}
+let Router = {
+  start: function(){
+    ReactRouter.run(routes, function (Handler) {
+      React.render(<Handler/>, document.getElementById("view"));
+    }); 
+  }
+};
+
+export default Router;

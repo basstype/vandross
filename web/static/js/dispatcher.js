@@ -12,6 +12,9 @@ var Dispatcher = DeLorean.Flux.createDispatcher({
   lights: function(){
     this.dispatch('lights');
   },
+  light: function(id){
+    this.dispatch('light', id);
+  },
   getStores: function(){
     return {auth: AuthStore, hue: HueStore};
   }

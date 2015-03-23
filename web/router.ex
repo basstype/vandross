@@ -38,4 +38,9 @@ defmodule Vandross.Router do
      get "/hue/lights/:id", HueController, :light_info
 
   end
+
+  socket "/ws", Vandross do
+    channel "hue:*", HueChannel
+    #channel "nest:*", NestChannel
+  end
 end

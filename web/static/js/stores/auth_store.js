@@ -24,9 +24,13 @@ let Store = DeLorean.Flux.createStore({
     Http.post(
       '/api/auth',
       credObj, 
-      (data) => outerContext.setData(data), 
+      (data) => {
+        outerContext.setData(data)
+        App.Socket = App.Channels.createSocket();
+        App.Channels.init(App.Socket);
+      }, 
       (jqXHR, textStatus, errorThrown) => outerContext.setData({ token: null }),
-      true;
+      true
     );
   },
 
@@ -35,6 +39,8 @@ let Store = DeLorean.Flux.createStore({
   },
 
   logout: function(){
+    App.Channels.disconnect(App.Socket);
+    App.Socket = null;
     return this.setData({token: null});
   }
 }); 

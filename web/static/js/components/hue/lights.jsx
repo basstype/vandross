@@ -1,8 +1,13 @@
 import React from "react";
 import HueStore from "../../stores/hue_store"
+import HueActions from '../../actions/hue_actions';
 
 var Lights = React.createClass({
   getInitialState: function() {
+    if(HueStore.chan){
+      console.log("here");
+      HueActions.getLights();
+    }
     return HueStore.store.data;
   },
 
@@ -15,13 +20,22 @@ var Lights = React.createClass({
   },
 
   _onChange: function() {
+    this.replaceState(HueStore.store.data);
 
+    if(this.state.error){
+      alert(this.state.error);
+    }
   },
 
   renderLights: function(){
-    var rows = [];
-    for (var i=0; i < 8; i++) {
-        rows.push(<li key={i}>{i}</li>);
+    let rows = [];
+
+    for (var key in this.state.lights) {
+      rows.push(<li key={key}>
+        <div>
+          <p>{this.state.lights[key].name}</p>
+        </div>
+      </li>);
     }
 
     return <ul>{rows}</ul>

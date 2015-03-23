@@ -3,12 +3,27 @@ import DeLorean from 'delorean.js';
 import * as Http from '../http';
 
 let Store = DeLorean.Flux.createStore({ 
-  data: { lights: [] },
+  data: { lights: {}, chan: null },
 
   setData: function (data) { 
-    sessionStorage.setItem(TOKEN, data.token);
     this.data = data; 
     this.emit('change'); 
+  }, 
+
+  setChannel: function (chan) { 
+    this.data.chan = chan;
+
+    this.data.chan.on("join", msg => {
+      this.data.chan.send("hue:lights", {});
+    });
+
+    this.data.chan.on("hue:lights", msg => {
+      this.setData({lights: msg, chan: this.data.chan});
+    });
+  }, 
+
+  removeChannel: function () { 
+    this.setData({lights: {}, chan: null});
   }, 
 
   actions: { 
@@ -18,22 +33,12 @@ let Store = DeLorean.Flux.createStore({
 
   getLights: function(){
     let outerContext = this;
-
-    Http.get(
-      '/api/hue/lights', 
-      (data) => outerContext.setData(data), 
-      (jqXHR, textStatus, errorThrown) => outerContext.setData({ lights: [], error: textStatus })
-    );
+    this.data.chan.send("hue:lights", {});
   },
 
   getLightInfo: function(id){
     let outerContext = this;
-    
-    Http.get(
-      '/api/hue/lights', 
-      (data) => outerContext.setData(data), 
-      (jqXHR, textStatus, errorThrown) => outerContext.setData({ lights: [], error: textStatus })
-    );
+    return lights[id];
   }  
 }); 
 
