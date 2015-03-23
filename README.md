@@ -13,3 +13,10 @@ Instructions:
 4. Start Phoenix endpoint with `mix phoenix.server`
 
 Now you can visit `localhost:4000` from your browser.
+
+Roadmap:
+
+  * [ ] Phillips Hue Support
+  * [ ] Create Scenes
+  * [ ] Nest Support
+  * [ ] Geolocation
